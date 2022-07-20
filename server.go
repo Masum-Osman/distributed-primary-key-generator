@@ -4,12 +4,17 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 )
 
 type KeyParams struct {
 	DataCenterID int32 `json:"datacenterID"`
 	MachineID    int32 `json:"machineID"`
+}
+
+type UniqueID struct {
+	Key int64 `json:"key"`
 }
 
 func logging(next http.HandlerFunc) http.HandlerFunc {
@@ -35,7 +40,9 @@ func generate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	output, err := json.Marshal(params)
+	var res UniqueID
+	res.Key = rand.Int63()
+	output, err := json.Marshal(res)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
