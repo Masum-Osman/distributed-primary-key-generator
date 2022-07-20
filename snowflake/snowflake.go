@@ -3,9 +3,14 @@ package snowflake
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
-func GenerateKey(datacenterID, machineID uint64) uint64 {
-	fmt.Println(datacenterID, machineID)
-	return datacenterID + machineID + rand.Uint64()
+func Snowflake(datacenterID, machineID uint64) uint64 {
+
+	timestamp := time.Now().UnixMilli()
+
+	fmt.Printf("%b\n", datacenterID)
+
+	return uint64(timestamp) + datacenterID + machineID + rand.Uint64()
 }

@@ -41,7 +41,7 @@ func generate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var res UniqueID
-	res.Key = sf.GenerateKey(params.DataCenterID, params.MachineID)
+	res.Key = sf.Snowflake(params.DataCenterID, params.MachineID)
 	output, err := json.Marshal(res)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
