@@ -1,20 +1,20 @@
 package main
 
 import (
+	sf "dpkg/snowflake"
 	"encoding/json"
 	"io/ioutil"
 	"log"
-	"math/rand"
 	"net/http"
 )
 
 type KeyParams struct {
-	DataCenterID int32 `json:"datacenterID"`
-	MachineID    int32 `json:"machineID"`
+	DataCenterID uint64 `json:"datacenterID"`
+	MachineID    uint64 `json:"machineID"`
 }
 
 type UniqueID struct {
-	Key int64 `json:"key"`
+	Key uint64 `json:"key"`
 }
 
 func logging(next http.HandlerFunc) http.HandlerFunc {
@@ -41,7 +41,7 @@ func generate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var res UniqueID
-	res.Key = rand.Int63()
+	res.Key = sf.GenerateKey(params.DataCenterID, params.MachineID)
 	output, err := json.Marshal(res)
 	if err != nil {
 		http.Error(w, err.Error(), 500)
